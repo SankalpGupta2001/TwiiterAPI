@@ -1,0 +1,9 @@
+fastapi==0.68.1
+uvicorn==0.15.0
+sqlalchemy==1.4.22
+databases==0.4.3
+passlib[bcrypt]==1.8.0
+python-dotenv==0.19.1
+tweepy==4.1.0
+pytest==6.2.5
+requests-mock==1.9.3
