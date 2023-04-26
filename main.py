@@ -1,5 +1,5 @@
 from fastapi import FastAPI 
-app = FastAPI()
+app = FastAPI() 
 from app.db import create_tables
 import tweepy
 import sqlite3
