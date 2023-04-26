@@ -1,6 +1,9 @@
 from fastapi import FastAPI 
 app = FastAPI()
 from app.db import create_tables
+import tweepy
+import sqlite3
+
 from schema import User ,UserDB,Follower,FollowerDB
 
 create_tables()
@@ -11,6 +14,19 @@ ACCESS_TOKEN_EXPIRE_HOURS = 24
 
 
 hash_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+def create_friendship(username, access_token, access_token_secret):
+    auth = tweepy.OAuth1UserHandler(
+        CONSUMER_KEY, CONSUMER_SECRET, access_token, access_token_secret
+    )
+    api = tweepy.API(auth)
+
+    try:
+        api.create_friendship(username)
+        return True
+    except tweepy.TweepError:
+        return False
+
 
 def add_followers(followers, profile_id):
     conn = sqlite3.connect("query.db")
