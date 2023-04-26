@@ -12,6 +12,44 @@ ACCESS_TOKEN_EXPIRE_HOURS = 24
 
 hash_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+def add_followers(followers, profile_id):
+    conn = sqlite3.connect("query.db")
+    c = conn.cursor()
+
+    for follower in followers:
+        name = follower["name"]
+        screen_name = follower["screen_name"]
+        follower_count = follower["follower_count"]
+        c.execute(
+            """
+            INSERT INTO follower (twitter_profile_id, name, screen_name, follower_count)
+            VALUES (?, ?, ?, ?)
+            """,
+            (profile_id, name, screen_name, follower_count)
+        )
+
+    conn.commit()
+    conn.close()
+
+
+
+
+def get_user_by_username(username: str) -> User:
+    """Get user by username from the database"""
+    conn = sqlite3.connect("database.db")
+    c = conn.cursor()
+
+    c.execute("SELECT * FROM users WHERE email=?", (username,))
+    user_data = c.fetchone()
+
+    if user_data:
+        user = User(*user_data)
+    else:
+        user = None
+
+    conn.close()
+
+    return user
 
 
 def create_access_token(data: dict, expires_delta: timedelta):
